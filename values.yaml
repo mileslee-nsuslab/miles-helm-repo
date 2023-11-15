@@ -1,7 +1,7 @@
 # Default values for sample-helm.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-image_tag: "f897698"
+image_tag: "latest"
 environment: "develop" 
 
 replicaCount: 1
@@ -20,7 +20,7 @@ initContainerImage: {}
   # image_tag: "build-2956"
 
 image:
-  repository: 809599471177.dkr.ecr.ap-northeast-2.amazonaws.com/ggcore/client-user-verification
+  repository: nginx
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   # tag: ""
@@ -98,7 +98,7 @@ startupProbe: {
   "timeoutSeconds": 5,
   "periodSeconds": 10,
   "successThreshold": 1,
-  "failureThreshold": 11
+  "failureThreshold": 10
 }
 
 readinessProbe: {
