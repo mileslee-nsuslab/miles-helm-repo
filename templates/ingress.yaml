@@ -1,0 +1,47 @@
+{{- $fullName := include "chart-template.fullname" . -}}
+{{- range $i, $v := .Values.ingresses -}}
+{{- $svcPort := "" -}}
+{{ if gt (len $.Values.service.ports) 1 }}
+  {{- $svcPort = (index $.Values.service.ports $i) -}}
+{{ else }}
+  {{- $svcPort = (index $.Values.service.ports 0) -}}
+{{ end}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-{{ $i }}
+  labels:
+    {{- include "chart-template.labels" $ | nindent 6 }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 6 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .className }}
+  {{- if .tls }}
+  tls:
+    {{- range .tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  name: {{ $svcPort.name }}
+          {{- end }}
+    {{- end }}
+{{- end }}

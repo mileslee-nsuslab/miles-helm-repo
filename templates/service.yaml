@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chart-template.fullname" . }}
+  labels:
+    {{- include "chart-template.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  {{- with index .Values.service.ports 0 }}
+    - port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: TCP
+      name: {{ .name }}
+  {{- end }}
+  {{- if gt (len .Values.service.ports) 1 }}
+  {{- with index .Values.service.ports 1 }}
+    - port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: TCP
+      name: {{ .name }}
+  {{- end }}
+  {{- end }}
+  selector:
+    {{- include "chart-template.selectorLabels" . | nindent 4 }}

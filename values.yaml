@@ -1,0 +1,195 @@
+# Default values for sample-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+image_tag: "f897698"
+environment: "develop" 
+
+replicaCount: 1
+
+# Overrides the image tag whose default is the chart appVersion.
+# image_tag: "build-2956"
+# Tenant Name  ex) np | gp | npay
+tenant : "np"
+# Development, Staging, Test, Production
+# environment: "<<ENVIRONMENT>>" 
+brand: "ggpcom"
+
+initContainerImage: {}
+  # repository: 809599471177.dkr.ecr.ap-northeast-2.amazonaws.com/ggcore/client-user-verification
+  # pullPolicy: Always
+  # image_tag: "build-2956"
+
+image:
+  repository: 809599471177.dkr.ecr.ap-northeast-2.amazonaws.com/ggcore/client-user-verification
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  # tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: "ggpcom-client-user-verification-web"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "ggpcom-client-user-verification-web"
+
+podAnnotations: {}
+
+# ToDo: Doing anything in the container with JSON runs with root privileges. 
+# If this container image has an error or something strange, you can use all functions of the container with root privileges, 
+# so to prevent this, enter the user ID and group ID of the opposite user login appearance inside the container. In order to receive a specific file, you must only have access to it.
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  ports:
+    - name: http1
+      port: 80         # Service Port
+      targetPort: 80   # Container listen Port
+    - name: http2
+      port: 8080         # Service Port
+      targetPort: 8080   # Container listen Port
+  # http2:
+  #   name: http2
+  #   port: 6975
+  #   targetPort: 6975
+
+ingresses:
+  - className: "alb" # nlb | alb | nginx | traefik | kong
+    annotations:
+      alb.ingress.kubernetes.io/scheme:  "internet-facing"            # internal | internet-facing
+      alb.ingress.kubernetes.io/group.name: "np-global-dev-alb-external"    # Shared ALB Group Name.  <<TENANT>>-<<ENV>>-alb-<< internal | external >>
+      alb.ingress.kubernetes.io/group.order: "100"
+      alb.ingress.kubernetes.io/healthcheck-path: /
+      alb.ingress.kubernetes.io/healthcheck-port: "80"
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:651482608654:certificate/74c8f600-7a43-4515-b844-f1a2bed1dd61
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443, "HTTP": 80}]'      # internal:[{"HTTP" : 80}], external:[{"HTTPS": 443, "HTTP": 80}]
+      alb.ingress.kubernetes.io/target-group-attributes: load_balancing.algorithm.type=least_outstanding_requests
+      alb.ingress.kubernetes.io/target-type: ip
+    hosts:
+      - host: client-user-verification-davaopoker-dev.ggcore.net
+        paths:
+          - path: /
+            pathType: Prefix
+  - className: "alb" # nlb | alb | nginx | traefik | kong
+    annotations:
+      alb.ingress.kubernetes.io/scheme:  "internet-facing"            # internal | internet-facing
+      alb.ingress.kubernetes.io/group.name: "np-global-dev-alb-external"    # Shared ALB Group Name.  <<TENANT>>-<<ENV>>-alb-<< internal | external >>
+      alb.ingress.kubernetes.io/group.order: "100"
+      alb.ingress.kubernetes.io/healthcheck-path: /
+      alb.ingress.kubernetes.io/healthcheck-port: "80"
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:651482608654:certificate/74c8f600-7a43-4515-b844-f1a2bed1dd61
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443, "HTTP": 80}]'      # internal:[{"HTTP" : 80}], external:[{"HTTPS": 443, "HTTP": 80}]
+      alb.ingress.kubernetes.io/target-group-attributes: load_balancing.algorithm.type=least_outstanding_requests
+      alb.ingress.kubernetes.io/target-type: ip
+    hosts:
+      - host: client-user-verification-davaopoker-dev2.ggcore.net
+        paths:
+          - path: /
+            pathType: Prefix
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 256m
+  #   memory: 512Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+startupProbe: {
+  "httpGet": {
+    "path": "/",
+    "port": 80
+  },
+  "initialDelaySeconds": 10,
+  "timeoutSeconds": 5,
+  "periodSeconds": 10,
+  "successThreshold": 1,
+  "failureThreshold": 10
+}
+
+readinessProbe: {
+  "httpGet": {
+    "path": "/",
+    "port": 80
+  },
+  "initialDelaySeconds": 10,
+  "timeoutSeconds": 5,
+  "periodSeconds": 10,
+  "successThreshold": 1,
+  "failureThreshold": 5
+}
+
+livenessProbe: {
+  "httpGet": {
+    "path": "/",
+    "port": 80
+  },
+  "initialDelaySeconds": 120,
+  "timeoutSeconds": 5,
+  "periodSeconds": 10,
+  "successThreshold": 1,
+  "failureThreshold": 3
+}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# -- extra sidecar containers
+extraContainers: []
+
+
+# -- Optionally specify additional volumes
+extraVolumes: []
+# - name : host-path
+#   hostPath:
+#     path: /var/log/tpm/accesslog
+#     type: DirectoryOrCreate
+
+# -- Optionally specify additional volume mounts for the container
+extraVolumeMounts: []
+# - name: config-secret
+#   mountPath: /etc/nginx/nginx.conf
+#   subPath: nginx.conf
+# - name: config-secret
+#   mountPath: /app/config.json
+#   subPath: config.json
+# - name: config-secret
+#   mountPath: /tmp/application.properties
+#   subPath: application.properties
+# - name: ops-secret
+#   mountPath: /etc/ops-secret
+# - name: host-path
+#   mountPath: /var/log/tpm/accesslog
+
+pvc: {}
+  # size: 10Gi
+  # storageClass: gp3 
