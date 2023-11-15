@@ -54,6 +54,12 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image_tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.preStop }}
+          lifecycle:
+            preStop:
+                exec:
+                  command: ["/bin/bash", "-c", "sleep {{ .sleepTime }}"]
+          {{- end }}
           envFrom:
           - secretRef:
               name: {{ include "chart-template.config.secret.name" . }} 

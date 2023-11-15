@@ -134,18 +134,33 @@ affinity: {}
 # -- extra sidecar containers
 extraContainers: []
 
+preStop:
+  sleepTime: 10
+
 
 # -- Optionally specify additional volumes
 extraVolumes: 
-- name : gp2
+- name : pvc-1
   persistentVolumeClaim:
     claimName: pvc-1
+- name : pvc-2
+  persistentVolumeClaim:
+    claimName: pvc-2
+- name : pvc-3
+  persistentVolumeClaim:
+    claimName: pvc-2
 
 # -- Optionally specify additional volume mounts for the container
 extraVolumeMounts: 
-- name: gp2
+- name: pvc-1
   mountPath: /etc/dummy.txt
   subPath: dummy.txt
+- name: pvc-2
+  mountPath: /etc/dummy2.txt
+  subPath: dummy2.txt
+- name: pvc-3
+  mountPath: /etc/dummy3.txt
+  subPath: dummy3.txt
 # - name: config-secret
 #   mountPath: /app/config.json
 #   subPath: config.json
@@ -158,6 +173,12 @@ extraVolumeMounts:
 #   mountPath: /var/log/tpm/accesslog
 
 persistentVolumeClaims: 
-  - size: 10Gi
-    storageClass: gp2
-    name: pvc-1
+- size: 10Gi
+  storageClass: gp2
+  name: pvc-1
+- size: 10Gi
+  storageClass: gp2
+  name: pvc-2
+- size: 10Gi
+  storageClass: gp2
+  name: pvc-3
