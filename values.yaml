@@ -144,7 +144,7 @@ extraVolumes:
 # -- Optionally specify additional volume mounts for the container
 extraVolumeMounts: 
 - name: gp2
-  mountPath: /etc
+  mountPath: /etc/dummy.txt
   subPath: dummy.txt
 # - name: config-secret
 #   mountPath: /app/config.json
