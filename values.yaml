@@ -145,7 +145,7 @@ extraVolumes:
 extraVolumeMounts: 
 - name: gp2
   mountPath: /etc
-#   subPath: nginx.conf
+  subPath: dummy.txt
 # - name: config-secret
 #   mountPath: /app/config.json
 #   subPath: config.json
