@@ -1,5 +1,5 @@
 {{- $fullName := include "chart-template.fullname" . -}}
-{{- range $i, $v := .Values.persistentVolumeClaims -}}
+{{ range $i, $v := .Values.persistentVolumeClaims }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

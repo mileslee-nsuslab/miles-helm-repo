@@ -31,8 +31,8 @@ spec:
       - name: config-secret
         secret:
           secretName: {{ include "chart-template.config.secret.name" .}} 
-      {{- if .Values.extraVolumes }}
-      {{- toYaml .Values.extraVolumes | nindent 6 }}
+      {{- with .Values.extraVolumes }}
+      {{- toYaml . | nindent 6 }}
       {{- end }}
       {{- with .Values.initContainerImage }}
       initContainers:
