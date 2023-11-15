@@ -136,16 +136,15 @@ extraContainers: []
 
 
 # -- Optionally specify additional volumes
-extraVolumes: []
-# - name : host-path
-#   hostPath:
-#     path: /var/log/tpm/accesslog
-#     type: DirectoryOrCreate
+extraVolumes: 
+- name : gp2
+  persistentVolumeClaim:
+    claimName: ggpcom-client-user-verification-web
 
 # -- Optionally specify additional volume mounts for the container
-extraVolumeMounts: []
-# - name: config-secret
-#   mountPath: /etc/nginx/nginx.conf
+extraVolumeMounts: 
+- name: gp2
+  mountPath: /etc
 #   subPath: nginx.conf
 # - name: config-secret
 #   mountPath: /app/config.json
