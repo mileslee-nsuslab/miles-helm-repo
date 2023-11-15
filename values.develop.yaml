@@ -1,5 +1,5 @@
 # Overrides the image tag whose default is the chart appVersion.
-image_tag: "f897698"
+image_tag: "latest"
 environment: "develop" 
 
 ingresses:
