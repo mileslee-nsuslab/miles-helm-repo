@@ -12,7 +12,7 @@ replicaCount: 1
 tenant : "np"
 # Development, Staging, Test, Production
 # environment: "<<ENVIRONMENT>>" 
-brand: "ggpcom"
+brand: "global"
 
 initContainerImage: {}
   # repository: 809599471177.dkr.ecr.ap-northeast-2.amazonaws.com/ggcore/client-user-verification
@@ -27,7 +27,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: "ggpcom-client-user-verification-web"
+fullnameOverride: "miles-test-app"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -36,7 +36,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "ggpcom-client-user-verification-web"
+  name: "miles-test-app"
 
 podAnnotations: {}
 
