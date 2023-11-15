@@ -157,6 +157,7 @@ extraVolumeMounts:
 # - name: host-path
 #   mountPath: /var/log/tpm/accesslog
 
-pvc: 
-  size: 10Gi
-  storageClass: gp2
+persistentVolumeClaims: 
+  - size: 10Gi
+    storageClass: gp2
+    name: pvc-1

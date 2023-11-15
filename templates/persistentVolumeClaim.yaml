@@ -1,8 +1,9 @@
-{{- with .Values.pvc }}
+{{- $fullName := include "chart-template.fullname" . -}}
+{{- range $i, $v := .Values.persistentVolumeClaims -}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "chart-template.fullname" $ }}
+  name: {{ .name | default (printf "%s-%d" $fullName $i) }} 
 spec:
   accessModes:
   - ReadWriteOnce
