@@ -139,7 +139,7 @@ extraContainers: []
 extraVolumes: 
 - name : gp2
   persistentVolumeClaim:
-    claimName: ggpcom-client-user-verification-web
+    claimName: pvc-1
 
 # -- Optionally specify additional volume mounts for the container
 extraVolumeMounts: 
