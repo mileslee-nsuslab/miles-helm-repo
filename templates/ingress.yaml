@@ -9,7 +9,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "chart-template.fullname" . }}-{{ $i }}
+  name: {{ include "chart-template.fullname" $ }}-{{ $i }}
   labels:
     {{- include "chart-template.labels" $ | nindent 6 }}
   {{- with .annotations }}
@@ -38,7 +38,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "chart-template.fullname" . }}
+                name: {{ include "chart-template.fullname" $ }}
                 port:
                   name: {{ $svcPort.name }}
           {{- end }}
