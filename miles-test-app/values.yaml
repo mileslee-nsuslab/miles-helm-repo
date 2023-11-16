@@ -103,7 +103,7 @@ readinessProbe: {
     "path": "/",
     "port": 80
   },
-  "timeoutSeconds": 5,
+  "timeoutSeconds": 4,
   "periodSeconds": 10,
   "successThreshold": 1,
   "failureThreshold": 5
