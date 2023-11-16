@@ -134,17 +134,28 @@ extraContainers: []
 
 
 # -- Optionally specify additional volumes
-extraVolumes: []
-# - name : host-path
-#   hostPath:
-#     path: /var/log/tpm/accesslog
-#     type: DirectoryOrCreate
+extraVolumes: 
+- name : pvc-1
+  persistentVolumeClaim:
+    claimName: pvc-1
+- name : pvc-2
+  persistentVolumeClaim:
+    claimName: pvc-2
+- name : pvc-3
+  persistentVolumeClaim:
+    claimName: pvc-3
 
 # -- Optionally specify additional volume mounts for the container
-extraVolumeMounts: []
-# - name: config-secret
-#   mountPath: /etc/nginx/nginx.conf
-#   subPath: nginx.conf
+extraVolumeMounts: 
+- name: pvc-1
+  mountPath: /etc/dummy1
+  subPath: dummy1
+- name: pvc-2
+  mountPath: /etc/dummy2
+  subPath: dummy2
+- name: pvc-3
+  mountPath: /etc/dummy3
+  subPath: dummy3
 # - name: config-secret
 #   mountPath: /app/config.json
 #   subPath: config.json
@@ -156,6 +167,13 @@ extraVolumeMounts: []
 # - name: host-path
 #   mountPath: /var/log/tpm/accesslog
 
-pvc: {}
-  # size: 10Gi
-  # storageClass: gp3 
+persistentVolumeClaims: 
+  - size: 1Gi
+    name: pvc-1
+    storageClass: gp2
+  - size: 1Gi
+    name: pvc-2
+    storageClass: gp2 
+  - size: 1Gi
+    name: pvc-3
+    storageClass: gp2 

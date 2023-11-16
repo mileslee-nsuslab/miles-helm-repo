@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .name | default (printf "%s-%d" $fullName $i) }} 
+  name: {{ .name | default (printf "%s-%d" (include "chart-template.fullname" $) $i) }} 
 spec:
   accessModes:
   - ReadWriteOnce
