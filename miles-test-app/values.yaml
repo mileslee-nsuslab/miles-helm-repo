@@ -92,7 +92,6 @@ startupProbe: {
     "path": "/",
     "port": 80
   },
-  "initialDelaySeconds": 10,
   "timeoutSeconds": 5,
   "periodSeconds": 10,
   "successThreshold": 1,
@@ -104,7 +103,6 @@ readinessProbe: {
     "path": "/",
     "port": 80
   },
-  "initialDelaySeconds": 10,
   "timeoutSeconds": 5,
   "periodSeconds": 10,
   "successThreshold": 1,
@@ -116,7 +114,6 @@ livenessProbe: {
     "path": "/",
     "port": 80
   },
-  "initialDelaySeconds": 120,
   "timeoutSeconds": 5,
   "periodSeconds": 10,
   "successThreshold": 1,
