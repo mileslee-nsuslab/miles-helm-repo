@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: nginx
-  name: nginx-2
+  name: nginx
   namespace: default
 spec:
   progressDeadlineSeconds: 600
