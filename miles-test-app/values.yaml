@@ -168,7 +168,7 @@ extraVolumeMounts:
 #   mountPath: /var/log/tpm/accesslog
 
 persistentVolumeClaims: 
-  - size: 500Mi
+  - size: 1Gi
     name: pvc-1
     storageClass: gp2
   - size: 1Gi
