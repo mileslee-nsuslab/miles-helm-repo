@@ -1,4 +1,3 @@
-{{- $fullName := include "chart-template.fullname" . -}}
 {{- range $i, $v := .Values.ingresses -}}
 {{- $svcPort := "" -}}
 {{ if gt (len $.Values.service.ports) 1 }}
@@ -10,7 +9,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-{{ $i }}
+  name: {{ include "chart-template.fullname" . }}-{{ $i }}
   labels:
     {{- include "chart-template.labels" $ | nindent 6 }}
   {{- with .annotations }}
@@ -39,7 +38,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ $fullName }}
+                name: {{ include "chart-template.fullname" . }}
                 port:
                   name: {{ $svcPort.name }}
           {{- end }}

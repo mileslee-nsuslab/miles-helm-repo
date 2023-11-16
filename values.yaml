@@ -1,14 +1,18 @@
-
-image_tag: "latest"
+# Default values for sample-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+image_tag: "f897698"
 environment: "develop" 
 
 replicaCount: 1
 
+# Overrides the image tag whose default is the chart appVersion.
+# image_tag: "build-2956"
 # Tenant Name  ex) np | gp | npay
 tenant : "np"
 # Development, Staging, Test, Production
 # environment: "<<ENVIRONMENT>>" 
-brand: "global"
+brand: "ggpcom"
 
 initContainerImage: {}
   # repository: 809599471177.dkr.ecr.ap-northeast-2.amazonaws.com/ggcore/client-user-verification
@@ -16,14 +20,14 @@ initContainerImage: {}
   # image_tag: "build-2956"
 
 image:
-  repository: nginx
+  repository: 809599471177.dkr.ecr.ap-northeast-2.amazonaws.com/ggcore/client-user-verification
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   # tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: "miles-test-app"
+fullnameOverride: "ggpcom-client-user-verification-web"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -32,7 +36,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  # name: "test-service-account"
+  name: "ggpcom-client-user-verification-web"
 
 podAnnotations: {}
 
@@ -79,7 +83,6 @@ resources: {}
   #   memory: 128Mi
 
 autoscaling:
-  enabled: false
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
@@ -130,33 +133,19 @@ affinity: {}
 # -- extra sidecar containers
 extraContainers: []
 
-preStop:
-  sleepTime: 10
-
 
 # -- Optionally specify additional volumes
-extraVolumes: 
-- name : pvc-1
-  persistentVolumeClaim:
-    claimName: pvc-1
-- name : pvc-2
-  persistentVolumeClaim:
-    claimName: pvc-2
-- name : pvc-3
-  persistentVolumeClaim:
-    claimName: pvc-3
+extraVolumes: []
+# - name : host-path
+#   hostPath:
+#     path: /var/log/tpm/accesslog
+#     type: DirectoryOrCreate
 
 # -- Optionally specify additional volume mounts for the container
-extraVolumeMounts: 
-- name: pvc-1
-  mountPath: /etc/dummy.txt
-  subPath: dummy.txt
-- name: pvc-2
-  mountPath: /etc/dummy2.txt
-  subPath: dummy2.txt
-- name: pvc-3
-  mountPath: /etc/dummy3.txt
-  subPath: dummy3.txt
+extraVolumeMounts: []
+# - name: config-secret
+#   mountPath: /etc/nginx/nginx.conf
+#   subPath: nginx.conf
 # - name: config-secret
 #   mountPath: /app/config.json
 #   subPath: config.json
@@ -168,13 +157,6 @@ extraVolumeMounts:
 # - name: host-path
 #   mountPath: /var/log/tpm/accesslog
 
-persistentVolumeClaims: 
-- size: 10Gi
-  storageClass: gp2
-  name: pvc-1
-- size: 10Gi
-  storageClass: gp2
-  name: pvc-2
-- size: 10Gi
-  storageClass: gp2
-  name: pvc-3
+pvc: {}
+  # size: 10Gi
+  # storageClass: gp3 

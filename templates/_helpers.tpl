@@ -74,4 +74,3 @@ Ops Secret Name
 {{- define "chart-template.ops.secret.name" }}
 {{- printf "%s" .Values.fullnameOverride | lower }}
 {{- end }}
-
