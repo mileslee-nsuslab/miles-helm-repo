@@ -1,6 +1,6 @@
-{{- if not .Values.statefulSet.enabled }}
+{{- if .Values.statefulSet.enabled }}
 apiVersion: apps/v1
-kind: Deployment
+kind: Statefulset
 metadata:
   name: {{ include "chart-template.fullname" . }}
   labels:

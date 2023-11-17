@@ -4,6 +4,9 @@
 image_tag: "latest"
 environment: "develop" 
 
+statefulSet:
+  enabled: true
+
 replicaCount: 1
 
 # Overrides the image tag whose default is the chart appVersion.
