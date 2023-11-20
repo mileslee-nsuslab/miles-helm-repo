@@ -15,7 +15,7 @@ ingresses:
       alb.ingress.kubernetes.io/target-group-attributes: load_balancing.algorithm.type=least_outstanding_requests
       alb.ingress.kubernetes.io/target-type: ip
     hosts:
-      - host: client-user-verification-davaopoker-dev.ggcore.net
+      - host: miles-test-1.kro.kr
         paths:
           - path: /
             pathType: Prefix
@@ -31,7 +31,23 @@ ingresses:
       alb.ingress.kubernetes.io/target-group-attributes: load_balancing.algorithm.type=least_outstanding_requests
       alb.ingress.kubernetes.io/target-type: ip
     hosts:
-      - host: client-user-verification-davaopoker-dev.ggcore.net
+      - host: miles-test-2.kro.kr
+        paths:
+          - path: /
+            pathType: Prefix
+  - className: "alb" # nlb | alb | nginx | traefik | kong
+    annotations:
+      alb.ingress.kubernetes.io/scheme:  "internet-facing"            # internal | internet-facing
+      alb.ingress.kubernetes.io/group.name: "np-global-dev-alb-external"    # Shared ALB Group Name.  <<TENANT>>-<<ENV>>-alb-<< internal | external >>
+      alb.ingress.kubernetes.io/group.order: "100"
+      alb.ingress.kubernetes.io/healthcheck-path: /
+      alb.ingress.kubernetes.io/healthcheck-port: "80"
+      # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:651482608654:certificate/74c8f600-7a43-4515-b844-f1a2bed1dd61
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 8080}]'      # internal:[{"HTTP" : 80}], external:[{"HTTPS": 443, "HTTP": 80}]
+      alb.ingress.kubernetes.io/target-group-attributes: load_balancing.algorithm.type=least_outstanding_requests
+      alb.ingress.kubernetes.io/target-type: ip
+    hosts:
+      - host: miles-test-3.kro.kr
         paths:
           - path: /
             pathType: Prefix
