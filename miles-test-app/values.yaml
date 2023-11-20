@@ -66,8 +66,8 @@ service:
       port: 8080         # Service Port
       targetPort: 8080   # Container listen Port
     - name: http3
-      port: 80         # Service Port
-      targetPort: 80   # Container listen Port
+      port: 8081        # Service Port
+      targetPort: 8081   # Container listen Port
   # http2:
   #   name: http2
   #   port: 6975
