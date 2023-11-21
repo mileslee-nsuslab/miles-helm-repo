@@ -1,2 +1,2 @@
 reloader:
-  autoReloadAll: trues
+  autoReloadAll: true
