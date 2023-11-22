@@ -1,0 +1,173 @@
+{{- if  .Values.statefulSet.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "chart-template.fullname" . }}
+  labels:
+    {{- include "chart-template.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "chart-template.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "chart-template.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "chart-template.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+      - name: config-secret
+        secret:
+          secretName: {{ include "chart-template.config.secret.name" .}} 
+      {{- with .Values.extraVolumes }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- with .Values.initContainerImage }}
+      initContainers:
+        - name: {{ printf "init-%s" $.Release.Name }}
+          securityContext:
+            {{- toYaml $.Values.securityContext | nindent 12 }}
+          image: "{{ .repository }}:{{ .image_tag | default $.Values.image_tag }}"
+          imagePullPolicy: {{ .pullPolicy }}
+          envFrom:
+          - secretRef:
+              name: {{ include "chart-template.config.secret.name" $ }} 
+      {{- end }}
+      containers:
+        {{- with .Values.extraContainers }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        - name: {{ .Release.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image_tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.preStop }}
+          lifecycle:
+            preStop:
+                exec:
+                  command: ["/bin/bash", "-c", "sleep {{ .sleepTime }}"]
+          {{- end }}
+          envFrom:
+          - secretRef:
+              name: {{ include "chart-template.config.secret.name" . }} 
+          ports:
+            {{- with index .Values.service.ports 0 }}
+            - name: {{ .name }}
+              containerPort: {{ .targetPort }}
+              protocol: TCP
+            {{- end }}
+            {{- if gt (len .Values.service.ports) 1 }}
+            {{- with index .Values.service.ports 1 }}
+            - name: {{ .name }}
+              containerPort: {{ .targetPort }}
+              protocol: TCP
+            {{- end }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.extraVolumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end}}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- if eq .protocol "http" }}
+            httpGet: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+              path: {{ .path }}
+            {{- end }}
+            {{- if eq .protocol "tcp" }}
+            tcpSocket: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            {{- if eq .protocol "grpc" }}
+            grpc: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            periodSeconds: {{ .periodSeconds }}
+            successThreshold: {{ .successThreshold }}
+            timeoutSeconds: {{ .timeoutSeconds }}
+          {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- if eq .protocol "http" }}
+            httpGet: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+              path: {{ .path }}
+            {{- end }}
+            {{- if eq .protocol "tcp" }}
+            tcpSocket: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            {{- if eq .protocol "grpc" }}
+            grpc: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            periodSeconds: {{ .periodSeconds }}
+            successThreshold: {{ .successThreshold }}
+            timeoutSeconds: {{ .timeoutSeconds }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- if eq .protocol "http" }}
+            httpGet: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+              path: {{ .path }}
+            {{- end }}
+            {{- if eq .protocol "tcp" }}
+            tcpSocket: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            {{- if eq .protocol "grpc" }}
+            grpc: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            periodSeconds: {{ .periodSeconds }}
+            successThreshold: {{ .successThreshold }}
+            timeoutSeconds: {{ .timeoutSeconds }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
