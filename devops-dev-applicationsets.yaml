@@ -46,10 +46,6 @@ spec:
         env: '{{cluster}}'
     spec:
       project: default
-      source:
-        repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
-        targetRevision: main
-        ref: value
       sources:
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
@@ -57,9 +53,9 @@ spec:
             valueFiles:
               - $value/{{path}}/values.yaml
               - $value/{{path}}/values.{{cluster}}.yaml
-        # - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
-        #   targetRevision: main
-        #   ref: value
+        - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
+          targetRevision: main
+          ref: value
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
           path: sealed-secrets/{{path[1]}}/{{cluster}}/{{path[2]}}
