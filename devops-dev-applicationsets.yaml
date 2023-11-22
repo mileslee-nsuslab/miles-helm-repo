@@ -48,6 +48,7 @@ spec:
       project: default
       sources:
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
+          targetRevision: main
           chart: platform-gitops
           helm:
             valueFiles:
