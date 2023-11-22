@@ -59,7 +59,7 @@ spec:
           ref: value
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
-          path: sealed-secrets/{{path[1]}}/{{cluster}}/{{path[2]}}
+          path: sealed-secrets/{{path[0]}}/{{cluster}}/{{path[1]}}
       destination:
         server: '{{url}}' 
         namespace: 'default'
