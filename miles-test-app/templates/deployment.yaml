@@ -85,15 +85,36 @@ spec:
           {{- end}}
           {{- with .Values.startupProbe }}
           startupProbe:
-            {{- toYaml . | nindent 12 }}
+            httpGet: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+              path: {{ .path }}
+            periodSeconds: {{ .periodSeconds }}
+            successThreshold: {{ .successThreshold }}
+            timeoutSeconds: {{ .timeoutSeconds }}
           {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
-            {{- toYaml . | nindent 12 }}
+            httpGet: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+              path: {{ .path }}
+            periodSeconds: {{ .periodSeconds }}
+            successThreshold: {{ .successThreshold }}
+            timeoutSeconds: {{ .timeoutSeconds }}
           {{- end }}
           {{- with .Values.readinessProbe }}
           readinessProbe:
-            {{- toYaml . | nindent 12 }}
+            httpGet: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+              path: {{ .path }}
+            periodSeconds: {{ .periodSeconds }}
+            successThreshold: {{ .successThreshold }}
+            timeoutSeconds: {{ .timeoutSeconds }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

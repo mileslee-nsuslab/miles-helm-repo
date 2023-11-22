@@ -5,7 +5,7 @@ image_tag: "latest"
 environment: "develop" 
 
 statefulSet:
-  enabled: true
+  enabled: false
 
 replicaCount: 1
 
@@ -94,36 +94,27 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 startupProbe: {
-  "httpGet": {
-    "path": "/",
-    "port": 80
-  },
-  "timeoutSeconds": 5,
-  "periodSeconds": 10,
-  "successThreshold": 1,
-  "failureThreshold": 10
+  path: "/",
+  timeoutSeconds: 5,
+  periodSeconds: 10,
+  successThreshold: 1,
+  failureThreshold: 5
 }
 
 readinessProbe: {
-  "httpGet": {
-    "path": "/",
-    "port": 80
-  },
-  "timeoutSeconds": 5,
-  "periodSeconds": 10,
-  "successThreshold": 1,
-  "failureThreshold": 5
+  path: "/",
+  timeoutSeconds: 5,
+  periodSeconds: 10,
+  successThreshold: 1,
+  failureThreshold: 5
 }
 
 livenessProbe: {
-  "httpGet": {
-    "path": "/",
-    "port": 80
-  },
-  "timeoutSeconds": 5,
-  "periodSeconds": 10,
-  "successThreshold": 1,
-  "failureThreshold": 3
+  path: "/",
+  timeoutSeconds: 5,
+  periodSeconds: 10,
+  successThreshold: 1,
+  failureThreshold: 5
 }
 
 nodeSelector: {}
