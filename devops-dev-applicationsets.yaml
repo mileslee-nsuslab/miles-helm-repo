@@ -52,7 +52,8 @@ spec:
           chart: platform-gitops
           helm:
             valueFiles:
-              - "$value/values.yaml"
+              - "$value/{{path}}/values.yaml"
+              - "$value/{{path}}/values.{{cluster}}.yaml"
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
           ref: value
