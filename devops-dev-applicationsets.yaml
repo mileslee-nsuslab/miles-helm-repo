@@ -1,0 +1,63 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: miles-applicationset
+  annotations:
+      argocd.argoproj.io/sync-options: Validate=false
+spec:
+  generators:
+    # matrix 'parent' generator
+    - matrix:
+        generators:
+          # git generator 'child' #1
+          - git:
+              #repoURL: https://github.com/bobby.kim-nsuslab/multi-cluster-argo-demo.git
+              repoURL: git@github.com/mileslee-nsuslab/miles-helm-repo.git
+              revision: main
+              directories:
+              - path: charts/devops/*
+               
+          - list:
+              # v0.2.0+ form - does not require cluster/URL keys
+              # (but they are still supported).
+              elements:
+              # - cluster: dev
+              #   url: https://3389448CB7BEED329CD8156430E49395.gr7.ap-northeast-2.eks.amazonaws.com
+              #   brand: wsop
+                # template:
+                #   spec:
+                #     syncPolicy:
+                #       automated: {}
+                #syncOptions: ["ApplyOutOfSyncOnly=true","PrunePropagationPolicy=background"]
+              - cluster: in-cluster
+                url: https://kubernetes.default.svc
+                brand: global
+                team: devops
+  template:
+    metadata:
+      name: '{{path.basename}}-{{cluster}}-{{brand}}'
+      labels:
+        team: '{{team}}'
+        brand: '{{brand}}'
+        env: '{{cluster}}'
+    spec:
+      project: '{{cluster}}'
+      sources:
+        - repoURL: git@github.com:pyloncloud/platform-gitops.git
+          targetRevision: main
+          path: '{{path}}'
+          helm:
+            releaseName: '{{path.basename}}'
+            valueFiles:
+              - values.yaml
+              - 'values.{{cluster}}.yaml'
+      destination:
+        server: '{{url}}' 
+        namespace: 'default'
+      syncPolicy:
+        automated:
+          prune: true
+        syncOptions: 
+          - ApplyOutOfSyncOnly=true
+          - PrunePropagationPolicy=background
+          - CreateNamespace=true

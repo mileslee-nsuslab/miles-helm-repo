@@ -1,4 +1,4 @@
-{{- if .Values.statefulSet.enabled }}
+{{- if not .Values.statefulSet.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -85,15 +85,78 @@ spec:
           {{- end}}
           {{- with .Values.startupProbe }}
           startupProbe:
-            {{- toYaml . | nindent 12 }}
+            {{- if eq .protocol "http" }}
+            httpGet: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+              path: {{ .path }}
+            {{- end }}
+            {{- if eq .protocol "tcp" }}
+            tcpSocket: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            {{- if eq .protocol "grpc" }}
+            grpc: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            periodSeconds: {{ .periodSeconds }}
+            successThreshold: {{ .successThreshold }}
+            timeoutSeconds: {{ .timeoutSeconds }}
           {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
-            {{- toYaml . | nindent 12 }}
+            {{- if eq .protocol "http" }}
+            httpGet: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+              path: {{ .path }}
+            {{- end }}
+            {{- if eq .protocol "tcp" }}
+            tcpSocket: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            {{- if eq .protocol "grpc" }}
+            grpc: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            periodSeconds: {{ .periodSeconds }}
+            successThreshold: {{ .successThreshold }}
+            timeoutSeconds: {{ .timeoutSeconds }}
           {{- end }}
           {{- with .Values.readinessProbe }}
           readinessProbe:
-            {{- toYaml . | nindent 12 }}
+            {{- if eq .protocol "http" }}
+            httpGet: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+              path: {{ .path }}
+            {{- end }}
+            {{- if eq .protocol "tcp" }}
+            tcpSocket: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            {{- if eq .protocol "grpc" }}
+            grpc: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            periodSeconds: {{ .periodSeconds }}
+            successThreshold: {{ .successThreshold }}
+            timeoutSeconds: {{ .timeoutSeconds }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
