@@ -1,0 +1,176 @@
+# Default values for sample-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+image_tag: "latest"
+environment: "develop" 
+
+statefulSet:
+  enabled: false
+
+replicaCount: 1
+
+# Overrides the image tag whose default is the chart appVersion.
+# image_tag: "build-2956"
+# Tenant Name  ex) np | gp | npay
+tenant : "np"
+# Development, Staging, Test, Production
+# environment: "<<ENVIRONMENT>>" 
+brand: "global"
+
+initContainerImage: {}
+  # repository: 809599471177.dkr.ecr.ap-northeast-2.amazonaws.com/ggcore/client-user-verification
+  # pullPolicy: Always
+  # image_tag: "build-2956"
+
+image:
+  repository: nginx
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  # tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: "miles-test-app"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+
+podAnnotations: {}
+
+# ToDo: Doing anything in the container with JSON runs with root privileges. 
+# If this container image has an error or something strange, you can use all functions of the container with root privileges, 
+# so to prevent this, enter the user ID and group ID of the opposite user login appearance inside the container. In order to receive a specific file, you must only have access to it.
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  ports:
+    - name: http1
+      port: 80         # Service Port
+      targetPort: 80   # Container listen Port
+    - name: http2
+      port: 8080         # Service Port
+      targetPort: 8080   # Container listen Port
+    - name: http3
+      port: 81           # Service Port
+      targetPort: 80     # Container listen Port
+  # http2:
+  #   name: http2
+  #   port: 6975
+  #   targetPort: 6975
+
+ingresses: {}
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 256m
+  #   memory: 512Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+startupProbe: {
+  protocol: "http",
+  path: "/",
+  timeoutSeconds: 5,
+  periodSeconds: 10,
+  successThreshold: 1,
+  failureThreshold: 5
+}
+
+readinessProbe: {
+  protocol: "http",
+  path: "/",
+  timeoutSeconds: 5,
+  periodSeconds: 10,
+  successThreshold: 1,
+  failureThreshold: 5
+}
+
+livenessProbe: {
+  protocol: "http",
+  path: "/",
+  timeoutSeconds: 5,
+  periodSeconds: 10,
+  successThreshold: 1,
+  failureThreshold: 5
+}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# -- extra sidecar containers
+extraContainers: []
+
+
+# -- Optionally specify additional volumes
+extraVolumes: 
+- name : pvc-1
+  persistentVolumeClaim:
+    claimName: pvc-1
+- name : pvc-2
+  persistentVolumeClaim:
+    claimName: pvc-2
+- name : pvc-3
+  persistentVolumeClaim:
+    claimName: pvc-3
+
+# -- Optionally specify additional volume mounts for the container
+extraVolumeMounts: 
+- name: pvc-1
+  mountPath: /etc/dummy1
+  subPath: dummy1
+- name: pvc-2
+  mountPath: /etc/dummy2
+  subPath: dummy2
+- name: pvc-3
+  mountPath: /etc/dummy3
+  subPath: dummy3
+# - name: config-secret
+#   mountPath: /app/config.json
+#   subPath: config.json
+# - name: config-secret
+#   mountPath: /tmp/application.properties
+#   subPath: application.properties
+# - name: ops-secret
+#   mountPath: /etc/ops-secret
+# - name: host-path
+#   mountPath: /var/log/tpm/accesslog
+
+persistentVolumeClaims: 
+  - size: 1Gi
+    name: pvc-1
+    storageClass: gp2
+  - size: 1Gi
+    name: pvc-2
+    storageClass: gp2 
+  - size: 1Gi
+    name: pvc-3
+    storageClass: gp2 
