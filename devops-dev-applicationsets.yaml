@@ -15,7 +15,7 @@ spec:
               repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
               revision: main
               directories:
-              - path: charts/devops/*
+              - path: devops/*
                
           - list:
               # v0.2.0+ form - does not require cluster/URL keys
@@ -49,12 +49,13 @@ spec:
       sources:
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
-          path: '{{path}}'
           helm:
-            releaseName: '{{path.basename}}'
             valueFiles:
-              - values.yaml
-              - 'values.{{cluster}}.yaml'
+              - $value/{{path}}/values.yaml
+              - $value/{{path}}/values.{{cluster}}.yaml
+        - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
+          targetRevision: main
+          ref: value
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
           path: sealed-secrets/{{path[1]}}/{{cluster}}/{{path[2]}}
