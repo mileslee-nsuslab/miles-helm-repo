@@ -29,8 +29,12 @@ spec:
                 #     syncPolicy:
                 #       automated: {}
                 #syncOptions: ["ApplyOutOfSyncOnly=true","PrunePropagationPolicy=background"]
-              - cluster: in-cluster
+              - cluster: develop
                 url: https://kubernetes.default.svc
+                brand: global
+                team: devops
+              - cluster: test
+                url:  https://17BBBC38D86559D9B3B3E360DFF30CD8.sk1.us-east-1.eks.amazonaws.com
                 brand: global
                 team: devops
   template:
@@ -41,9 +45,9 @@ spec:
         brand: '{{brand}}'
         env: '{{cluster}}'
     spec:
-      project: '{{cluster}}'
+      project: default
       sources:
-        - repoURL: git@github.com:pyloncloud/platform-gitops.git
+        - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
           path: '{{path}}'
           helm:
@@ -51,6 +55,9 @@ spec:
             valueFiles:
               - values.yaml
               - 'values.{{cluster}}.yaml'
+        - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
+          targetRevision: main
+          path: sealed-secrets/{{path[1]}}/{{cluster}}/{{path[2]}}
       destination:
         server: '{{url}}' 
         namespace: 'default'
