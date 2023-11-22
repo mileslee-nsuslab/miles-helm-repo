@@ -85,33 +85,75 @@ spec:
           {{- end}}
           {{- with .Values.startupProbe }}
           startupProbe:
+            {{- if eq .protocol "http" }}
             httpGet: 
               {{- with index $.Values.service.ports 0 }}
               port: {{ .targetPort }}
               {{- end }}
               path: {{ .path }}
+            {{- end }}
+            {{- if eq .protocol "tcp" }}
+            tcpSocket: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            {{- if eq .protocol "grpc" }}
+            grpc: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
             periodSeconds: {{ .periodSeconds }}
             successThreshold: {{ .successThreshold }}
             timeoutSeconds: {{ .timeoutSeconds }}
           {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
+            {{- if eq .protocol "http" }}
             httpGet: 
               {{- with index $.Values.service.ports 0 }}
               port: {{ .targetPort }}
               {{- end }}
               path: {{ .path }}
+            {{- end }}
+            {{- if eq .protocol "tcp" }}
+            tcpSocket: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            {{- if eq .protocol "grpc" }}
+            grpc: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
             periodSeconds: {{ .periodSeconds }}
             successThreshold: {{ .successThreshold }}
             timeoutSeconds: {{ .timeoutSeconds }}
           {{- end }}
           {{- with .Values.readinessProbe }}
           readinessProbe:
+            {{- if eq .protocol "http" }}
             httpGet: 
               {{- with index $.Values.service.ports 0 }}
               port: {{ .targetPort }}
               {{- end }}
               path: {{ .path }}
+            {{- end }}
+            {{- if eq .protocol "tcp" }}
+            tcpSocket: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
+            {{- if eq .protocol "grpc" }}
+            grpc: 
+              {{- with index $.Values.service.ports 0 }}
+              port: {{ .targetPort }}
+              {{- end }}
+            {{- end }}
             periodSeconds: {{ .periodSeconds }}
             successThreshold: {{ .successThreshold }}
             timeoutSeconds: {{ .timeoutSeconds }}

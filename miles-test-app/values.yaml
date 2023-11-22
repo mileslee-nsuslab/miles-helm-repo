@@ -94,6 +94,7 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 startupProbe: {
+  protocol: "http",
   path: "/",
   timeoutSeconds: 5,
   periodSeconds: 10,
@@ -102,6 +103,7 @@ startupProbe: {
 }
 
 readinessProbe: {
+  protocol: "http",
   path: "/",
   timeoutSeconds: 5,
   periodSeconds: 10,
@@ -110,6 +112,7 @@ readinessProbe: {
 }
 
 livenessProbe: {
+  protocol: "http",
   path: "/",
   timeoutSeconds: 5,
   periodSeconds: 10,
