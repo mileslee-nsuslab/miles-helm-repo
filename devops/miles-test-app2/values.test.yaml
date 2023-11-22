@@ -2,6 +2,8 @@
 image_tag: "latest"
 environment: "test" 
 
+fullnameOverride: "miles-test-app2"
+
 # ingresses:
 #   - className: "alb" # nlb | alb | nginx | traefik | kong
 #     annotations:

@@ -2,6 +2,8 @@
 image_tag: "latest"
 environment: "develop" 
 
+fullnameOverride: "miles-dev-app"
+
 ingresses:
   - className: "alb" # nlb | alb | nginx | traefik | kong
     annotations:
