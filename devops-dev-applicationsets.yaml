@@ -48,17 +48,17 @@ spec:
       project: default
       sources:
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
-          targetRevision: main
+          targetRevision: HEAD
           chart: platform-gitops
           helm:
             valueFiles:
               - "$value/{{path}}/values.yaml"
               - "$value/{{path}}/values.{{cluster}}.yaml"
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
-          targetRevision: main
+          targetRevision: HEAD
           ref: value
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
-          targetRevision: main
+          targetRevision: HEAD
           path: sealed-secrets/{{path[1]}}/{{cluster}}/{{path[2]}}
       destination:
         server: '{{url}}' 
