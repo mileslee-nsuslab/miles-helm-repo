@@ -41,7 +41,7 @@ spec:
     metadata:
       name: '{{path.basename}}-{{cluster}}-{{brand}}'
       labels:
-        team: '{{team}}'
+        team: test
         brand: '{{brand}}'
         env: '{{cluster}}'
     spec:
