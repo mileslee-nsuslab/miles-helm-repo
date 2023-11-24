@@ -64,7 +64,7 @@ spec:
         server: '{{url}}' 
         namespace: 'default'
       syncPolicy:
-        preserveReousrcesOnDeleteion: true
+        preserveResourcesOnDeleteion: true
         automated:
           prune: true
         syncOptions: 
