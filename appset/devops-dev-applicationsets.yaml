@@ -5,6 +5,8 @@ metadata:
   annotations:
       argocd.argoproj.io/sync-options: Validate=false
 spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   generators:
     # matrix 'parent' generator
     - matrix:
@@ -64,7 +66,6 @@ spec:
         server: '{{url}}' 
         namespace: 'default'
       syncPolicy:
-        preserveResourcesOnDeletion: true
         automated:
           prune: true
         syncOptions: 
