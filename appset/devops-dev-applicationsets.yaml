@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: miles-applicationset
+  name: miles-dev-applicationset
   annotations:
       argocd.argoproj.io/sync-options: Validate=false
 spec:
