@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: miles-applicationset-new
+  name: miles-applicationset
   annotations:
       argocd.argoproj.io/sync-options: Validate=false
 spec:
@@ -64,6 +64,7 @@ spec:
         server: '{{url}}' 
         namespace: 'default'
       syncPolicy:
+        preserveReousrcesOnDeleteion: true
         automated:
           prune: true
         syncOptions: 
