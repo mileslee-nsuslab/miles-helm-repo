@@ -5,8 +5,8 @@ metadata:
   annotations:
       argocd.argoproj.io/sync-options: Validate=false
 spec:
-  # syncPolicy:
-  #   preserveResourcesOnDeletion: true
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   generators:
     # matrix 'parent' generator
     - matrix:
@@ -59,9 +59,9 @@ spec:
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
           ref: value
-        # - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
-        #   targetRevision: main
-        #   path: sealed-secrets/{{path[0]}}/{{cluster}}/{{path[1]}}
+        - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
+          targetRevision: main
+          path: sealed-secrets/{{path[0]}}/{{cluster}}/{{path[1]}}
       destination:
         server: '{{url}}' 
         namespace: 'default'
