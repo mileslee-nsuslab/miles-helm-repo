@@ -52,7 +52,6 @@ spec:
             valueFiles:
               - "$value/{{path}}/values.yaml"
               - "$value/{{path}}/values.{{cluster}}.yaml"
-              - "$value/{{path}}/values.{{cluster}}.{{cloud}}.yaml"
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
           ref: value
