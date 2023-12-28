@@ -46,7 +46,7 @@ spec:
       project: default
       sources:
         - repoURL: https://pyloncloud.github.io/helm-charts/stable
-          targetRevision: platform-gitops-1.0.0
+          targetRevision: 1.0.0
           chart: platform-gitops
           helm:
             valueFiles:
