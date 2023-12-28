@@ -58,7 +58,8 @@ spec:
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
           path: sealed-secrets/{{path[1]}}/{{path[2]}}/{{path[3]}}/{{path[4]}}
-          include: 'secret.{{cluster}}.yaml'
+          directory:
+            include: 'secret.{{cluster}}.yaml'
       destination:
         server: '{{url}}' 
         namespace: 'default'
