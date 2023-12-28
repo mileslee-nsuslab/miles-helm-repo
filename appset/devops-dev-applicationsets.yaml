@@ -17,7 +17,7 @@ spec:
               repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
               revision: main
               directories:
-              - path: devops/*/*/*
+              - path: /charts/devops/*/*/*
                
           - list:
               # v0.2.0+ form - does not require cluster/URL keys
@@ -57,7 +57,7 @@ spec:
           ref: value
         - repoURL: https://github.com/mileslee-nsuslab/miles-helm-repo.git
           targetRevision: main
-          path: sealed-secrets/{{path[0]}}/{{cluster}}/{{path[1]}}
+          path: sealed-secrets/{{path}}/secret.{{cluster}}.yaml
       destination:
         server: '{{url}}' 
         namespace: 'default'
