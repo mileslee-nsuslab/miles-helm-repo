@@ -37,7 +37,7 @@ spec:
                 team: devops
   template:
     metadata:
-      name: '{{path[0]}}-{{path[1]}}-{{cluster}}-{{path[3]}}'
+      name: '{{path[1]}}-{{path[2]}}-{{cluster}}-{{path[4]}}'
       labels:
         team: '{{team}}'
         brand: '{{brand}}'
